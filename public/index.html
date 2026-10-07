@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pásalo — envía archivos entre tus equipos</title>
+<link rel="stylesheet" href="style.css?v=2.0.1">
+</head>
+<body>
+
+<!-- Vinculación por código (estilo TeamViewer) -->
+<div id="pairView" class="pair-view">
+  <div class="pair-card">
+    <div class="logo">📦</div>
+    <h1>Pásalo</h1>
+    <p class="hint">Escribe el código de 6 dígitos que se muestra en la PC para vincular este equipo.</p>
+    <div id="localCode" class="local-code" hidden>Tu código: <b id="localCodeVal"></b></div>
+    <input id="codeInput" inputmode="numeric" pattern="[0-9]*" maxlength="6"
+           placeholder="••••••" autocomplete="off" spellcheck="false">
+    <button id="pairBtn" class="btn">Vincular</button>
+    <p id="pairError" class="pair-error" hidden>Código incorrecto, intenta de nuevo.</p>
+  </div>
+</div>
+
+<!-- App (visible solo tras vincular) -->
+<div id="app" hidden>
+<header>
+  <div class="brand">
+    <div class="logo">📦</div>
+    <div>
+      <h1>Pásalo</h1>
+      <p>Tus archivos, directo de un equipo a otro</p>
+    </div>
+  </div>
+  <div class="me">
+    <label>Este equipo se llama
+      <input id="myName" maxlength="40" autocomplete="off" spellcheck="false">
+    </label>
+    <span id="status" class="status connecting">Conectando…</span>
+    <button id="unpairBtn" class="linklike" title="Olvidar la vinculación de este equipo">desvincular</button>
+  </div>
+</header>
+
+<main>
+  <section id="qrSection" hidden>
+    <h2>Abre en tu celular</h2>
+    <div class="qr-card">
+      <div id="qrImg" class="qr-img"></div>
+      <div>
+        <p class="hint">Escanea con la cámara del celular (mismo Wi-Fi). Si un código no abre, toca la otra dirección.</p>
+        <p id="qrUrls" class="qr-urls"></p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Equipos conectados</h2>
+    <p id="emptyDevices" class="hint">Abre esta misma página en tu otro equipo y vincúlalo con el código. Déjala abierta en el celular mientras transfieres.</p>
+    <div id="devices" class="devices"></div>
+  </section>
+
+  <section>
+    <h2>Equipos vinculados</h2>
+    <p class="hint">Todos los equipos con acceso, estén conectados o no. Solo la PC puede revocar accesos.</p>
+    <div id="linked" class="devices"></div>
+  </section>
+
+  <section>
+    <h2>Transferencias</h2>
+    <div id="transfers"><p class="hint" id="emptyTransfers">Aquí verás el progreso de tus envíos.</p></div>
+  </section>
+
+  <section>
+    <h2>Recibidos</h2>
+    <div id="received"><p class="hint">Aquí aparecen los archivos que recibas.</p></div>
+  </section>
+</main>
+
+<footer>
+  Hecho por nosotros · v2.0.1 · Los archivos viajan directo entre tus equipos cuando tu red lo permite; si no, tu propia PC hace de puente. Todo queda en tu red.
+</footer>
+</div>
+
+<input type="file" id="fileInput" multiple hidden>
+<script src="qrcode.min.js?v=2.0.1"></script>
+<script src="proto.js?v=2.0.1"></script>
+<script src="app.js?v=2.0.1"></script>
+</body>
+</html>

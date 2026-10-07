@@ -1,0 +1,380 @@
+:root {
+  --papel: #FAF8F3;
+  --tinta: #1c1a17;
+  --tinta-suave: #6b655c;
+  --verde: #1e5c3f;
+  --verde-claro: #e7f0e9;
+  --dorado: #c9a227;
+  --borde: #e8e2d6;
+  --rojo: #b3362b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 2px solid var(--dorado);
+  background: #fff;
+}
+
+.brand { display: flex; align-items: center; gap: 0.9rem; }
+.logo {
+  font-size: 2.2rem;
+  background: var(--verde-claro);
+  border-radius: 16px;
+  padding: 0.4rem 0.6rem;
+}
+.brand h1 { margin: 0; font-size: 1.6rem; letter-spacing: -0.02em; }
+.brand p { margin: 0.15rem 0 0; color: var(--tinta-suave); font-size: 0.95rem; }
+
+.me { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+.me label { font-size: 0.85rem; color: var(--tinta-suave); display: flex; align-items: center; gap: 0.5rem; }
+.me input {
+  font-size: 1rem;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  background: var(--papel);
+  color: var(--tinta);
+  max-width: 11rem;
+}
+
+.status {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.status.online { background: var(--verde-claro); color: var(--verde); }
+.status.connecting, .status.offline { background: #f3e9d2; color: #8a6d1c; }
+
+main { max-width: 860px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+section { margin-bottom: 2.25rem; }
+h2 { font-size: 1.15rem; margin: 0 0 0.9rem; letter-spacing: -0.01em; }
+.hint { color: var(--tinta-suave); font-size: 0.95rem; }
+
+.devices {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+.device {
+  background: #fff;
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  padding: 1.25rem;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(28, 26, 23, 0.05);
+}
+.device-icon { font-size: 2.6rem; margin-bottom: 0.5rem; }
+.device-name { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.9rem; word-break: break-word; }
+
+.btn {
+  appearance: none;
+  border: none;
+  background: var(--verde);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.8rem 1.2rem;
+  border-radius: 12px;
+  cursor: pointer;
+  width: 100%;
+}
+.btn:active { transform: scale(0.98); }
+
+.transfer {
+  background: #fff;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  margin-bottom: 0.7rem;
+}
+.t-label { font-weight: 600; margin-bottom: 0.5rem; word-break: break-all; font-size: 0.95rem; }
+.bar { height: 10px; background: var(--verde-claro); border-radius: 999px; overflow: hidden; }
+.bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--verde), #2e7d54);
+  border-radius: 999px;
+  transition: width 0.2s;
+}
+.t-pct { font-size: 0.85rem; color: var(--tinta-suave); margin-top: 0.35rem; }
+.transfer.done .t-pct { color: var(--verde); font-weight: 700; }
+.transfer.failed .t-pct { color: var(--rojo); font-weight: 700; }
+
+.received-item {
+  background: #fff;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  margin-bottom: 0.7rem;
+  word-break: break-all;
+}
+.received-item a { color: var(--verde); font-weight: 700; text-decoration: none; font-size: 1.05rem; }
+.r-size { color: var(--tinta-suave); font-size: 0.9rem; }
+
+footer {
+  text-align: center;
+  color: var(--tinta-suave);
+  font-size: 0.85rem;
+  padding: 1.5rem 1rem 2.5rem;
+  border-top: 1px solid var(--borde);
+}
+
+/* Diálogo de aceptación de transferencia */
+.offer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(28, 26, 23, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  z-index: 50;
+}
+.offer-box {
+  background: #fff;
+  border-radius: 18px;
+  padding: 1.5rem;
+  max-width: 26rem;
+  width: 100%;
+  box-shadow: 0 12px 40px rgba(28, 26, 23, 0.25);
+  border-top: 4px solid var(--dorado);
+}
+.offer-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+  word-break: break-word;
+}
+.offer-sub {
+  color: var(--tinta-suave);
+  margin-bottom: 1.2rem;
+}
+.offer-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+.btn.ok { background: var(--verde); }
+.btn.no {
+  background: #fff;
+  color: var(--rojo);
+  border: 2px solid var(--rojo);
+}
+
+/* Pantalla de vinculación por código */
+.pair-view {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+}
+.pair-view[hidden] { display: none; }
+.pair-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 2rem 1.75rem;
+  max-width: 24rem;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(28, 26, 23, 0.10);
+  border-top: 4px solid var(--dorado);
+}
+.pair-card .logo { font-size: 3rem; margin-bottom: 0.5rem; }
+.pair-card h1 { margin: 0 0 0.5rem; font-size: 1.8rem; }
+.pair-card .hint { margin-bottom: 1.25rem; }
+.local-code {
+  background: var(--verde-claro);
+  color: var(--verde);
+  font-size: 1.05rem;
+  border-radius: 12px;
+  padding: 0.7rem;
+  margin-bottom: 1rem;
+}
+.local-code b { font-size: 1.4rem; letter-spacing: 0.15em; }
+#codeInput {
+  font-size: 2rem;
+  letter-spacing: 0.3em;
+  text-align: center;
+  width: 100%;
+  padding: 0.7rem;
+  border: 2px solid var(--borde);
+  border-radius: 14px;
+  margin-bottom: 1rem;
+  color: var(--tinta);
+  background: var(--papel);
+}
+#codeInput:focus { outline: none; border-color: var(--verde); }
+.pair-card .btn { margin-bottom: 0.5rem; }
+.pair-error { color: var(--rojo); font-weight: 600; margin: 0.5rem 0 0; }
+
+/* ID de dispositivo + desvincular */
+.device-id {
+  font-size: 0.8rem;
+  color: var(--tinta-suave);
+  font-family: ui-monospace, monospace;
+  margin: -0.5rem 0 0.9rem;
+}
+.linklike {
+  appearance: none;
+  border: none;
+  background: none;
+  color: var(--tinta-suave);
+  font-size: 0.8rem;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0.3rem;
+}
+
+.offer-files { list-style: none; margin: 0 0 18px; padding: 0; max-height: 180px; overflow: auto; text-align: left; }
+.offer-files li { padding: 7px 10px; background: #f1f5f9; border-radius: 8px; margin-bottom: 6px; font-size: 14px; overflow-wrap: anywhere; }
+.offer-files .r-size { color: #64748b; }
+.revoke-btn { background: none; border: none; color: #dc2626; font-size: 13px; padding: 8px 0 0; cursor: pointer; text-decoration: underline; }
+.revoke-btn:hover { color: #991b1b; }
+
+/* ---- Escena animada de transferencia: la cajita viaja entre equipos ---- */
+.t-stage {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.2rem 0 0.7rem;
+  user-select: none;
+}
+.t-dev { font-size: 1.5rem; line-height: 1; }
+.t-track {
+  position: relative;
+  flex: 1;
+  height: 2.1rem;
+  border-bottom: 3px dotted var(--borde);
+}
+.t-pack {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 1.6rem;
+  line-height: 1;
+  opacity: 0.45;
+  animation: pack-pulse 1.6s ease-in-out infinite;
+}
+@keyframes pack-pulse { 50% { opacity: 0.22; } }
+
+/* Enviando: la caja viaja de un equipo al otro, una y otra vez */
+.transfer.st-sending .t-pack {
+  opacity: 1;
+  animation: pack-travel 2.4s ease-in-out infinite;
+}
+@keyframes pack-travel {
+  0%   { left: 0; transform: translateY(0); }
+  45%  { transform: translateY(-7px); }
+  55%  { transform: translateY(-7px); }
+  100% { left: calc(100% - 1.7rem); transform: translateY(0); }
+}
+/* Recibiendo: viaja al revés */
+.transfer.dir-recv .t-stage { flex-direction: row-reverse; }
+.transfer.dir-recv.st-sending .t-pack { animation-name: pack-travel-rev; }
+@keyframes pack-travel-rev {
+  0%   { left: calc(100% - 1.7rem); transform: translateY(0); }
+  45%  { transform: translateY(-7px); }
+  55%  { transform: translateY(-7px); }
+  100% { left: 0; transform: translateY(0); }
+}
+
+/* Esperando confirmación: la caja ya llegó, brinca suave */
+.transfer.st-confirming .t-pack {
+  opacity: 1;
+  animation: pack-bounce 0.9s ease-in-out infinite;
+}
+.transfer.st-confirming:not(.dir-recv) .t-pack { left: calc(100% - 1.7rem); }
+.transfer.st-confirming.dir-recv .t-pack { left: 0; }
+@keyframes pack-bounce { 50% { transform: translateY(-8px); } }
+
+/* Listo: la caja aterriza con un pop */
+.transfer.done .t-pack {
+  opacity: 1;
+  animation: pack-pop 0.45s ease-out;
+}
+.transfer.done:not(.dir-recv) .t-pack { left: calc(100% - 1.7rem); }
+.transfer.done.dir-recv .t-pack { left: 0; }
+@keyframes pack-pop {
+  0% { transform: scale(0.5); }
+  60% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* Falló: la caja se frena y tiembla */
+.transfer.failed .t-pack {
+  opacity: 1;
+  left: 30%;
+  animation: pack-shake 0.5s ease-in-out;
+}
+@keyframes pack-shake {
+  20% { transform: translateX(-7px); }
+  45% { transform: translateX(6px); }
+  70% { transform: translateX(-4px); }
+  90% { transform: translateX(3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-pack { animation: none !important; }
+}
+
+/* Recibidos: botón para quitar de la lista */
+.received-item { position: relative; padding-right: 3rem; }
+.r-del {
+  position: absolute;
+  right: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  color: var(--tinta-suave);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+  border-radius: 8px;
+}
+.r-del:hover { color: var(--rojo); background: #f7ecec; }
+
+/* QR para abrir en el iPhone */
+.qr-card {
+  display: flex;
+  gap: 1.1rem;
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  margin-bottom: 0.7rem;
+}
+.qr-img svg { width: 140px; height: 140px; display: block; border-radius: 8px; }
+.qr-urls .qr-url {
+  display: block;
+  background: var(--verde-claro);
+  border: 2px solid transparent;
+  padding: 0.15rem 0.55rem;
+  border-radius: 6px;
+  margin: 0.15rem 0;
+  font-size: 0.9rem;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.qr-urls .qr-url.active { border-color: var(--verde); }

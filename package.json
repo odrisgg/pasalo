@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "ws": "^8.18.0"
+  },
+  "description": "Pásalo — transferencia local de archivos entre tus equipos (WebRTC P2P + modo puente local)",
+  "main": "server.js",
+  "name": "pasalo",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/test-server.js"
+  },
+  "version": "2.0.1",
+  "engines": {
+    "node": ">=18"
+  }
+}
